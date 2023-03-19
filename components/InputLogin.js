@@ -1,15 +1,19 @@
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 export default function InputLogin(props) {
+	const handleInputChange = (text) => {
+		props.setInputLogin(text);
+	};
 	return (
 		<View style={[styles.container, props.style]}>
 			<Text style={styles.eMail}>E-Mail</Text>
 			<TextInput
+				onChangeText={handleInputChange}
 				keyboardType='email-address'
 				placeholder='Email'
 				style={styles.inputStyle}
 			></TextInput>
-			<Text style={styles.helper}>Helper text</Text>
+			<Text style={styles.helper}></Text>
 		</View>
 	);
 }

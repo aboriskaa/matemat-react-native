@@ -1,11 +1,53 @@
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Alert } from 'react-native';
 import InputLogin from './InputLogin';
 import ButtonForLogin from './ButtonForLogin';
 import InputPassword from './InputPassword';
+import { http } from '../api/http';
 
-function MiddleLayer(props) {
+import { useEffect, useState } from 'react';
+
+function MiddleLayer({ style, setScreen, setSaveUser, setSaveToken }) {
+	const [inputLogin, setInputLogin] = useState('');
+	const [inputPass, setInputPass] = useState('');
+
+	function getUser() {
+		console.log(inputLogin, inputPass);
+		console.log('start');
+		http
+			.post('api/v1/login', {
+				email: inputLogin,
+				password: inputPass,
+				device_name: 'iphone',
+			})
+			.then((response) => {
+				if (response.data.token != null) {
+					http.interceptors.request.use(
+						(config) => {
+							const token = response.data.token;
+							if (token) {
+								config.headers.Authorization = `Bearer ${token}`;
+							}
+							return config;
+						},
+						(error) => {
+							return Promise.reject(error);
+						}
+					);
+					setSaveToken(response.data.token);
+					setScreen('users');
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	function handleLogin() {
+		getUser();
+	}
+
 	return (
-		<View style={[styles.container, props.style]}>
+		<View style={[styles.container, style]}>
 			<View style={styles.scrollArea}>
 				<ScrollView
 					horizontal={false}
@@ -13,12 +55,17 @@ function MiddleLayer(props) {
 				>
 					<View style={styles.formLogin}>
 						<Text style={styles.loginForm}>LOGIN FORM</Text>
-						<InputLogin style={styles.materialHelperTextBox}></InputLogin>
-						<InputPassword style={styles.materialHelperTextBox}></InputPassword>
+						<InputLogin
+							setInputLogin={setInputLogin}
+							style={styles.materialHelperTextBox}
+						></InputLogin>
+						<InputPassword
+							setInputPass={setInputPass}
+							style={styles.materialHelperTextBox}
+						></InputPassword>
 						<ButtonForLogin
-							onPress={() => {
-								console.log('You tapped the button!');
-							}}
+							handler={handleLogin}
+							// onPress={handleLogin}
 							style={styles.ButtonForLogin}
 						/>
 					</View>

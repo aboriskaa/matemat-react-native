@@ -1,15 +1,19 @@
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 export default function InputPassword(props) {
+	const handleInputChange = (text) => {
+		props.setInputPass(text);
+	};
 	return (
 		<View style={[styles.container, props.style]}>
 			<Text style={styles.eMail}>Password</Text>
 			<TextInput
+				onChangeText={handleInputChange}
 				secureTextEntry={true}
 				placeholder='Password'
 				style={styles.inputStyle}
 			></TextInput>
-			<Text style={styles.helper}>Helper text</Text>
+			<Text style={styles.helper}></Text>
 		</View>
 	);
 }

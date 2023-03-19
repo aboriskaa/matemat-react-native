@@ -1,8 +1,8 @@
 import { StyleSheet, View, StatusBar, ScrollView } from 'react-native';
 import TopLayer from '../components/TopLayer';
-import MiddleLayer from '../components/MiddleLayer';
+import Users from '../components/Users';
 
-function StartScreen(props) {
+export default function UsersScreen({ setScreen, saveToken, saveUser }) {
 	return (
 		<View style={styles.container}>
 			<StatusBar animated />
@@ -10,11 +10,11 @@ function StartScreen(props) {
 			<TopLayer />
 
 			<View style={styles.containerMiddle}>
-				<MiddleLayer
+				<Users
+					setScreen={setScreen}
+					saveToken={saveToken}
+					saveUser={saveUser}
 					style={styles.scrollArea}
-					setScreen={props.setScreen}
-					setSaveToken={props.setSaveToken}
-					setSaveUser={props.setSaveUser}
 				/>
 			</View>
 		</View>
@@ -40,5 +40,3 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 	},
 });
-
-export default StartScreen;

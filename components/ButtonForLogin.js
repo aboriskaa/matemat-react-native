@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 
 function ButtonForLogin(props) {
 	return (
-		<TouchableOpacity style={[styles.container, props.style]}>
+		<TouchableOpacity
+			onPress={() => props.handler()}
+			style={[styles.container, props.style]}
+		>
 			<Text style={styles.caption}>Sign In</Text>
 		</TouchableOpacity>
 	);
